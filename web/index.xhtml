@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head></h:head>
+<h:body>
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true"/>
+        <p:dataTable id="personsList" var="person" value="#{dtPersonView.personList}" editable="true" editMode="cell">
+            <f:facet name="header">
+                Cell Editing
+            </f:facet>
+
+            <p:ajax event="cellEdit" listener="#{dtPersonView.onCellEdit}" update=":form:msgs"/>
+
+            <p:column headerText="FIO">
+                <h:outputText value="#{person.FIO}"/>
+            </p:column>
+
+            <p:columns value="#{dtPersonView.columns}" var="column">
+                <f:facet name="header">
+                    <h:outputText value="#{column.header}"/>
+                </f:facet>
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{person.dayStatus[column.property]}" style="display: block; background-color: #{person.dayStatus[column.property] == 'W' ? 'RED' : 'GREEN'}"/>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:inputText id="modelInput" value="#{person.dayStatus[column.property]}" style="width:96%"/>
+                    </f:facet>
+                </p:cellEditor>
+            </p:columns>
+
+        </p:dataTable>
+    </h:form>
+
+</h:body>
+</html>
